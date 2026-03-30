@@ -11,8 +11,9 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://*.vercel.app",        # all Vercel preview URLs
-        os.getenv("FRONTEND_URL", ""), # production URL via env var
+        "https://real-time-dashboard-imu8rmipb-topisters-projects.vercel.app",
+        "https://*.vercel.app",
+        os.getenv("FRONTEND_URL", ""),
     ],
     allow_credentials=True,
     allow_methods=["*"],
