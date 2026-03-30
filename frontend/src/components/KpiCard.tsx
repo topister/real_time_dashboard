@@ -1,9 +1,12 @@
+"use client";
+
 interface KpiCardProps {
   label: string;
   value: string | number;
   icon: string;
   trend?: "up" | "down" | "neutral";
   accent?: string;
+  loading?: boolean;
 }
 
 export default function KpiCard({
@@ -12,6 +15,7 @@ export default function KpiCard({
   icon,
   trend = "neutral",
   accent = "#00e5ff",
+  loading = false,
 }: KpiCardProps) {
   const trendSymbol = trend === "up" ? "▲" : trend === "down" ? "▼" : "–";
   const trendColor =
@@ -19,18 +23,28 @@ export default function KpiCard({
 
   return (
     <div
+      className="fade-in"
       style={{
         background: "#0d1117",
         border: "1px solid #1e2d3d",
         padding: "1.5rem",
         position: "relative",
         overflow: "hidden",
-        transition: "border-color .2s",
+        transition: "border-color .25s, transform .25s, box-shadow .25s",
+        cursor: "default",
       }}
-      onMouseEnter={(e) => (e.currentTarget.style.borderColor = accent)}
-      onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#1e2d3d")}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = accent;
+        e.currentTarget.style.transform = "translateY(-2px)";
+        e.currentTarget.style.boxShadow = `0 8px 30px ${accent}18`;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = "#1e2d3d";
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = "none";
+      }}
     >
-      {/* top accent line */}
+      {/* Top accent line */}
       <div
         style={{
           position: "absolute",
@@ -42,18 +56,19 @@ export default function KpiCard({
         }}
       />
 
+      {/* Header */}
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-start",
-          marginBottom: "1rem",
+          marginBottom: "1.2rem",
         }}
       >
         <span
           style={{
             fontFamily: "monospace",
-            fontSize: ".7rem",
+            fontSize: ".68rem",
             letterSpacing: ".15em",
             textTransform: "uppercase",
             color: "#5a7a96",
@@ -64,29 +79,44 @@ export default function KpiCard({
         <span style={{ fontSize: "1.2rem" }}>{icon}</span>
       </div>
 
-      <div
-        style={{
-          fontSize: "2.2rem",
-          fontWeight: 800,
-          color: "#e8edf2",
-          lineHeight: 1,
-          marginBottom: ".5rem",
-        }}
-      >
-        {value}
-      </div>
+      {/* Value */}
+      {loading ? (
+        <div
+          className="skeleton"
+          style={{ height: "2.2rem", width: "70%", marginBottom: ".6rem" }}
+        />
+      ) : (
+        <div
+          style={{
+            fontSize: "2.2rem",
+            fontWeight: 800,
+            color: "#e8edf2",
+            lineHeight: 1,
+            marginBottom: ".6rem",
+            fontVariantNumeric: "tabular-nums",
+            transition: "color .3s",
+          }}
+        >
+          {value}
+        </div>
+      )}
 
+      {/* Trend */}
       <div
         style={{
           fontFamily: "monospace",
-          fontSize: ".7rem",
+          fontSize: ".68rem",
           color: trendColor,
+          display: "flex",
+          alignItems: "center",
+          gap: ".3rem",
         }}
       >
-        {trendSymbol} Live
+        <span>{trendSymbol}</span>
+        <span>Live update</span>
       </div>
 
-      {/* background glow */}
+      {/* Background glow */}
       <div
         style={{
           position: "absolute",
@@ -95,8 +125,9 @@ export default function KpiCard({
           width: "100px",
           height: "100px",
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${accent}18 0%, transparent 70%)`,
+          background: `radial-gradient(circle, ${accent}15 0%, transparent 70%)`,
           pointerEvents: "none",
+          transition: "opacity .3s",
         }}
       />
     </div>
