@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap');
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; }
@@ -8,9 +10,6 @@ body {
   font-family: 'Syne', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
-
-/* ── Fonts ── */
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap');
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar       { width: 3px; }
